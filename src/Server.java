@@ -19,6 +19,7 @@ public class Server {
     public void startServer() throws IOException {
         while (true) {
             Socket connection = this.server.accept();
+            System.out.println("New Thread.");
             ServerThread handler = new ServerThread(this, connection);
             this.handlers.add(handler);
         }
@@ -26,7 +27,7 @@ public class Server {
 
     // 广播
     public void brodCast(String word) throws IOException {
-        for (Iterator it = this.handlers.iterator(); it.hasNext(); ) {
+        for (Iterator<ServerThread> it = this.handlers.iterator(); it.hasNext(); ) {
             ServerThread serverThread = (ServerThread) it.next();
             serverThread.say(word);
         }
@@ -35,7 +36,7 @@ public class Server {
     // 广播用户列表
     public void showAllUsers() throws IOException {
         StringBuffer word = new StringBuffer("All Users: \n");
-        for (Iterator it = this.handlers.iterator(); it.hasNext();) {
+        for (Iterator<ServerThread> it = this.handlers.iterator(); it.hasNext();) {
             word.append(((ServerThread)it.next()).getNickName()+"\n");
         }
         this.brodCast(word.toString());
