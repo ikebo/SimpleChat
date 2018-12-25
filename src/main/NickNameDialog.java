@@ -23,7 +23,7 @@ public class NickNameDialog extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 	private JTextField textField;
-	private Test window;
+	private Client window;
 
 	/**
 	 * Launch the application.
@@ -41,7 +41,7 @@ public class NickNameDialog extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public NickNameDialog(Test window) {
+	public NickNameDialog(Client window) {
 		this.window = window;
 		NickNameDialog that = this;
 		addWindowListener(new WindowAdapter() {
@@ -98,12 +98,13 @@ public class NickNameDialog extends JDialog {
 				});
 				buttonPane.setLayout(null);
 				okButton.setActionCommand("OK");
+				okButton.setContentAreaFilled(false);   // 设为透明
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
 			}
 			{
 				JButton cancelButton = new JButton("取消");
-				
+				cancelButton.setContentAreaFilled(false);   // 设为透明
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						closeFrame();

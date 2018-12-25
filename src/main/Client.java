@@ -5,6 +5,8 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import java.awt.BorderLayout;
 import javax.swing.JTextPane;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import java.awt.Font;
@@ -31,7 +33,7 @@ import javax.swing.JScrollPane;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-public class Test implements Runnable {
+public class Client implements Runnable {
 
 	private JFrame frmSimplechat;
 	private JTextField textField;
@@ -55,7 +57,7 @@ public class Test implements Runnable {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Test window = new Test();
+					Client window = new Client();
 					//window.frame.setVisible(true);
 					
 				} catch (Exception e) {
@@ -71,7 +73,7 @@ public class Test implements Runnable {
 	 * @throws UnknownHostException 
 	 * @throws InterruptedException 
 	 */
-	public Test() throws UnknownHostException, IOException, InterruptedException {
+	public Client() throws UnknownHostException, IOException, InterruptedException {
 		this.dialog1 = new NickNameDialog(this);
 		this.MessageHandler = new Thread(this);
 		this.connection = new Socket ("localhost", 6000);
@@ -104,6 +106,7 @@ public class Test implements Runnable {
 					    	str = preText + "\n" + arr[0];
 					    }
 					    this.textArea.setText(str);
+					    this.textArea.setCaretPosition(this.textArea.getDocument().getLength());
 				    } else if (arr[1].equals("1")) {
 				    	System.out.println("广播在线用户...");
 				    	this.textArea_1.setText(arr[0]);
@@ -140,7 +143,7 @@ public class Test implements Runnable {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		Test that = this;
+		Client that = this;
 		frmSimplechat = new JFrame();
 		frmSimplechat.setBackground(Color.LIGHT_GRAY);
 		frmSimplechat.setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\34662\\Desktop\\320x0w.jpg"));
@@ -171,12 +174,12 @@ public class Test implements Runnable {
 		textField.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-				System.out.println("pressed." + e.getKeyCode());
+				// 回车键发送消息
 				if (e.getKeyCode() != 10) {
 					return ;
 				}
 				String str = that.textField.getText();
-				if (str.equals("")) {
+				if (str.trim().equals("")) {
 					return ;
 				}
 				try {
@@ -193,11 +196,12 @@ public class Test implements Runnable {
 		textField.setColumns(10);
 		
 		JButton btnNewButton = new JButton("发送");
+		btnNewButton.setContentAreaFilled(false);   // 设为透明
 		// 监听发送消息事件
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String str = that.textField.getText();
-				if (str.equals("")) {
+				if (str.trim().equals("")) {
 					return ;
 				}
 				try {
