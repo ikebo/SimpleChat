@@ -26,20 +26,29 @@ public class Server {
     }
 
     // 广播
-    public void brodCast(String word) throws IOException {
+    public void brodCast(String word, String type) throws IOException {
         for (Iterator<ServerThread> it = this.handlers.iterator(); it.hasNext(); ) {
             ServerThread serverThread = (ServerThread) it.next();
-            serverThread.say(word);
+            if (type.equals("0") && word.split("说")[0].equals(serverThread.getNickName())) {
+            	String[] arr = word.split("说");
+            	String xword = "";
+            	for (int i=1; i<arr.length; i++) {
+            		xword += arr[i];
+            	}
+            	serverThread.say(serverThread.getNickName()+"(我)说"+xword, type);
+            	continue;
+            }
+            serverThread.say(word, type);
         }
     }
 
     // 广播用户列表
     public void showAllUsers() throws IOException {
-        StringBuffer word = new StringBuffer("All Users: \n");
+        StringBuffer word = new StringBuffer("");
         for (Iterator<ServerThread> it = this.handlers.iterator(); it.hasNext();) {
             word.append(((ServerThread)it.next()).getNickName()+"\n");
         }
-        this.brodCast(word.toString());
+        this.brodCast(word.toString(),"1");
     }
     
     public void removeHandler(ServerThread serverThread) {
