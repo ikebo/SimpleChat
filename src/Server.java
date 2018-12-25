@@ -49,6 +49,10 @@ public class Server {
     		}
     	}
     }
+    
+    public void printHandlersCount() {
+    	System.out.println("当前Server线程：" + this.handlers.size() + " 个");
+    }
 
     public static void main(String[] args) throws IOException {
         Server server = new Server();

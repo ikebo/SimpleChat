@@ -21,12 +21,16 @@ import java.net.UnknownHostException;
 import java.util.Scanner;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.Toolkit;
+import java.awt.Color;
+import javax.swing.JTextArea;
+import javax.swing.JScrollPane;
 
 public class Test implements Runnable {
 
-	private JFrame frame;
-	private final JTextPane textPane = new JTextPane();
+	private JFrame frmSimplechat;
 	private JTextField textField;
+	private JTextArea textArea;
 	
 	private Socket connection;
     private DataInputStream in;
@@ -69,7 +73,7 @@ public class Test implements Runnable {
         this.out = new DataOutputStream(connection.getOutputStream());
         this.objOut = new ObjectOutputStream(connection.getOutputStream());
         initialize();
-		this.frame.setVisible(true);
+		this.frmSimplechat.setVisible(true);
 		dialog1.setVisible(true);
         this.MessageHandler.start();
 	}
@@ -82,14 +86,14 @@ public class Test implements Runnable {
 				if (this.in.available() > 0) {
 				    receivedWord = this.in.readUTF();
 				    System.out.println(receivedWord);
-				    String preText = this.textPane.getText();
+				    String preText = this.textArea.getText();
 				    String str = new String("");
 				    if (preText.equals("")) {
 				    	str = receivedWord;
 				    } else {
 				    	str = preText + "\n" + receivedWord;
 				    }
-				    this.textPane.setText(str);
+				    this.textArea.setText(str);
 				}
 				Thread.sleep(500);
 			} catch (IOException e) {
@@ -126,8 +130,11 @@ public class Test implements Runnable {
 	 */
 	private void initialize() {
 		Test that = this;
-		frame = new JFrame();
-		frame.addWindowListener(new WindowAdapter() {
+		frmSimplechat = new JFrame();
+		frmSimplechat.setBackground(Color.CYAN);
+		frmSimplechat.setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\34662\\Desktop\\320x0w.jpg"));
+		frmSimplechat.setTitle("SimpleChat");
+		frmSimplechat.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				try {
@@ -138,27 +145,24 @@ public class Test implements Runnable {
 				}
 			}
 		});
-		frame.setResizable(false);
-		frame.setBounds(100, 100, 619, 414);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
-		textPane.setEditable(false);
-		textPane.setBounds(55, 55, 472, 210);
-		frame.getContentPane().add(textPane);
+		frmSimplechat.setResizable(false);
+		frmSimplechat.setBounds(100, 100, 619, 414);
+		frmSimplechat.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmSimplechat.getContentPane().setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("聊天室");
 		lblNewLabel.setFont(new Font("微软雅黑", Font.PLAIN, 22));
 		lblNewLabel.setIcon(null);
 		lblNewLabel.setBounds(15, 15, 66, 32);
-		frame.getContentPane().add(lblNewLabel);
+		frmSimplechat.getContentPane().add(lblNewLabel);
 		
 		JLabel lblNewLabel_1 = new JLabel("输入:");
 		lblNewLabel_1.setBounds(15, 289, 53, 21);
-		frame.getContentPane().add(lblNewLabel_1);
+		frmSimplechat.getContentPane().add(lblNewLabel_1);
 		
 		textField = new JTextField();
 		textField.setBounds(65, 280, 388, 38);
-		frame.getContentPane().add(textField);
+		frmSimplechat.getContentPane().add(textField);
 		textField.setColumns(10);
 		
 		JButton btnNewButton = new JButton("发送");
@@ -178,6 +182,16 @@ public class Test implements Runnable {
 			}
 		});
 		btnNewButton.setBounds(468, 280, 83, 38);
-		frame.getContentPane().add(btnNewButton);
+		frmSimplechat.getContentPane().add(btnNewButton);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(65, 51, 468, 214);
+		frmSimplechat.getContentPane().add(scrollPane);
+		
+		textArea = new JTextArea();
+		textArea.setFont(new Font("Monospaced", Font.PLAIN, 20));
+		scrollPane.setViewportView(textArea);
+		textArea.setEditable(false);
+		
 	}
 }

@@ -61,6 +61,7 @@ public class ServerThread extends Thread {
 				    	this.in.close();
 				    	this.out.close();
 				    	this.Server.removeHandler(this);
+				    	this.Server.printHandlersCount();
 				    }
 				}
 				sleep(500);
