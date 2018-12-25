@@ -41,6 +41,14 @@ public class Server {
         }
         this.brodCast(word.toString());
     }
+    
+    public void removeHandler(ServerThread serverThread) {
+    	for (Iterator<ServerThread> it = this.handlers.iterator(); it.hasNext();) {
+    		if (((ServerThread)it.next()) == serverThread) {
+    			this.handlers.remove(serverThread);
+    		}
+    	}
+    }
 
     public static void main(String[] args) throws IOException {
         Server server = new Server();

@@ -12,6 +12,7 @@ public class ServerThread extends Thread {
     private ObjectInputStream objIn;
     private DataOutputStream out;
     private String nickName;
+    private boolean running;
 
     public ServerThread(Server Server,Socket connection) throws IOException {
         this.Server = Server;
@@ -19,6 +20,7 @@ public class ServerThread extends Thread {
         this.in = new DataInputStream(connection.getInputStream());
         this.objIn = new ObjectInputStream(connection.getInputStream());
         this.out = new DataOutputStream(connection.getOutputStream());
+        this.running = true;
         start();
     }
 
@@ -43,7 +45,7 @@ public class ServerThread extends Thread {
 
     public void run() {
     	String[] arr;
-        while (true) {
+        while (this.running) {
             try {
 				if (this.objIn.available() > 0 || this.in.available() > 0) {
 					System.out.println("yes");
@@ -53,6 +55,12 @@ public class ServerThread extends Thread {
 				        this.nickName = arr[0];
 				    } else if (arr[1].equals("1")) {
 				    	this.Server.brodCast(this.nickName+"说: " + arr[0]);
+				    } else if (arr[1].equals("-1")) {
+				    	this.running = false;
+				    	System.out.println(this.nickName + "下线");
+				    	this.in.close();
+				    	this.out.close();
+				    	this.Server.removeHandler(this);
 				    }
 				}
 				sleep(500);

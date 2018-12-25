@@ -19,6 +19,8 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class Test implements Runnable {
 
@@ -125,6 +127,17 @@ public class Test implements Runnable {
 	private void initialize() {
 		Test that = this;
 		frame = new JFrame();
+		frame.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				try {
+					postMessage("", "-1");
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
 		frame.setResizable(false);
 		frame.setBounds(100, 100, 619, 414);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -157,6 +170,7 @@ public class Test implements Runnable {
 				}
 				try {
 					postMessage(str, "1");
+					that.textField.setText("");
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
