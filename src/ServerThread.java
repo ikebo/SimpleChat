@@ -44,7 +44,9 @@ public class ServerThread extends Thread {
 				    } else if (arr[1].equals("-1")) {
 				    	this.running = false;
 				    	System.out.println(this.nickName + "下线");
-				    	this.Server.brodCast(this.nickName + "已退出群聊", "0");
+				    	if (this.nickName != null) {
+				    		this.Server.brodCast(this.nickName + "已退出群聊", "0");
+				    	}
 				    	this.in.close();
 				    	this.out.close();
 				    	this.Server.removeHandler(this);

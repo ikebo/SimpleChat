@@ -48,7 +48,12 @@ public class NickNameDialog extends JDialog {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				closeFrame();
-				that.window.handleCloseDialog();
+				try {
+					that.window.handleCloseDialog();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		setModalityType(ModalityType.APPLICATION_MODAL);
@@ -102,7 +107,12 @@ public class NickNameDialog extends JDialog {
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						closeFrame();
-						that.window.handleCloseDialog();
+						try {
+							that.window.handleCloseDialog();
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 					}
 				});
 				cancelButton.setBounds(338, 5, 87, 41);
@@ -110,6 +120,10 @@ public class NickNameDialog extends JDialog {
 				buttonPane.add(cancelButton);
 			}
 		}
+		// 设置窗体居中显示
+		int[] loca = this.window.getCenterLocation(this.getWidth(),this.getHeight());
+		this.setLocation(loca[0], loca[1]);
+		
 	}
 	
 	public void closeFrame() {

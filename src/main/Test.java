@@ -24,6 +24,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.Toolkit;
 import java.awt.Color;
+import java.awt.Dimension;
+
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 import java.awt.event.KeyAdapter;
@@ -79,6 +81,7 @@ public class Test implements Runnable {
         this.objOut = new ObjectOutputStream(connection.getOutputStream());
         this.objIn = new ObjectInputStream(connection.getInputStream());
         initialize();
+        
 		this.frmSimplechat.setVisible(true);
 		dialog1.setVisible(true);
         this.MessageHandler.start();  
@@ -116,7 +119,9 @@ public class Test implements Runnable {
 	}
 	
 	
-	public void handleCloseDialog() {
+	// 未输入用户名直接退出的情况, 需关闭对应的Server线程
+	public void handleCloseDialog() throws IOException {
+		postMessage("", "-1");
 		System.exit(-1);
 	}
 	
@@ -137,7 +142,7 @@ public class Test implements Runnable {
 	private void initialize() {
 		Test that = this;
 		frmSimplechat = new JFrame();
-		frmSimplechat.setBackground(Color.CYAN);
+		frmSimplechat.setBackground(Color.LIGHT_GRAY);
 		frmSimplechat.setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\34662\\Desktop\\320x0w.jpg"));
 		frmSimplechat.setTitle("SimpleChat");
 		frmSimplechat.addWindowListener(new WindowAdapter() {
@@ -188,6 +193,7 @@ public class Test implements Runnable {
 		textField.setColumns(10);
 		
 		JButton btnNewButton = new JButton("发送");
+		// 监听发送消息事件
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String str = that.textField.getText();
@@ -230,9 +236,22 @@ public class Test implements Runnable {
 		frmSimplechat.getContentPane().add(scrollPane_1);
 		
 		textArea_1 = new JTextArea();
+		textArea_1.setForeground(new Color(60, 179, 113));
 		textArea_1.setFont(new Font("隶书", Font.PLAIN, 23));
 		textArea_1.setEditable(false);
 		scrollPane_1.setViewportView(textArea_1);
 		
+		// 设置窗体居中显示
+		int[] loca = getCenterLocation(frmSimplechat.getWidth(), frmSimplechat.getHeight());
+		frmSimplechat.setLocation(loca[0],loca[1]);
+	}
+	
+	// 获取屏幕中间位置的坐标值
+	public int[] getCenterLocation(int windowWidth, int windowHeight) {
+		Toolkit kit = Toolkit.getDefaultToolkit();
+		Dimension screenSize = kit.getScreenSize();
+		int screenWidth = screenSize.width;
+		int screenHeight = screenSize.height;
+		return new int[] {screenWidth/2-windowWidth/2, (screenHeight/2-windowHeight/2)-(screenHeight*15/100)};
 	}
 }
