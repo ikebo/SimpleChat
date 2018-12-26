@@ -76,7 +76,7 @@ public class Client implements Runnable {
 	public Client() throws UnknownHostException, IOException, InterruptedException {
 		this.dialog1 = new NickNameDialog(this);
 		this.MessageHandler = new Thread(this);
-		this.connection = new Socket ("localhost", 6000);
+		this.connection = new Socket ("ikebo.cn", 6000);
         System.out.println("Connection established.");
         this.in = new DataInputStream(connection.getInputStream());
         this.out = new DataOutputStream(connection.getOutputStream());
@@ -146,7 +146,7 @@ public class Client implements Runnable {
 		Client that = this;
 		frmSimplechat = new JFrame();
 		frmSimplechat.setBackground(Color.LIGHT_GRAY);
-		frmSimplechat.setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\34662\\Desktop\\320x0w.jpg"));
+		frmSimplechat.setIconImage(Toolkit.getDefaultToolkit().getImage(Client.class.getResource("/javax/swing/plaf/metal/icons/ocean/computer.gif")));
 		frmSimplechat.setTitle("SimpleChat");
 		frmSimplechat.addWindowListener(new WindowAdapter() {
 			@Override
